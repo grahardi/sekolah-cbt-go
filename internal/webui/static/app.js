@@ -67,12 +67,17 @@ function clearSession() {
 
 async function apiFetch(path, options = {}) {
   const headers = options.headers || {};
+  const hadToken = !!state.token;
   if (state.token) headers["Authorization"] = "Bearer " + state.token;
   if (options.body) headers["Content-Type"] = "application/json";
 
   const res = await fetch(path, { ...options, headers });
 
-  if (res.status === 401) {
+  // Only treat 401 as "session expired" when the request actually carried a
+  // bearer token — /peserta/login has no token yet and legitimately
+  // returns 401 for wrong credentials, which is a different message
+  // entirely and shouldn't be papered over with a generic one.
+  if (res.status === 401 && hadToken) {
     clearSession();
     showScreen("login");
     setLoginError("Sesi berakhir, silakan login ulang.");
