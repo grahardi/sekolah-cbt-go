@@ -7,12 +7,14 @@
 package auth
 
 import (
+	"errors"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
 type PesertaClaims struct {
+	Typ          string `json:"typ"`
 	SiswaUjianID string `json:"sua"`
 	UjianID      string `json:"uid"`
 	BanksoalID   string `json:"bid"`
@@ -21,6 +23,7 @@ type PesertaClaims struct {
 
 func IssuePesertaToken(secret, pesertaID, siswaUjianID, ujianID, banksoalID string, expiresAt time.Time) (string, error) {
 	claims := PesertaClaims{
+		Typ:          "peserta",
 		SiswaUjianID: siswaUjianID,
 		UjianID:      ujianID,
 		BanksoalID:   banksoalID,
@@ -41,6 +44,9 @@ func ParsePesertaToken(secret, tokenStr string) (*PesertaClaims, error) {
 	}, jwt.WithValidMethods([]string{"HS256"}))
 	if err != nil {
 		return nil, err
+	}
+	if claims.Typ != "peserta" {
+		return nil, errors.New("wrong token type")
 	}
 	return claims, nil
 }

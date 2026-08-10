@@ -10,4 +10,5 @@ import "github.com/jackc/pgx/v5/pgxpool"
 type Handlers struct {
 	Pool      *pgxpool.Pool
 	JWTSecret string
+	SekolahID string
 }
