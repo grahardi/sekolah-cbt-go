@@ -1,0 +1,22 @@
+# Template for the provisioning script to fill in and drop at
+# /etc/systemd/system/cbt-{{SEKOLAH_ID}}.service, then:
+#   systemctl daemon-reload
+#   systemctl enable --now cbt-{{SEKOLAH_ID}}
+#
+# Placeholders: {{SEKOLAH_ID}} {{SEKOLAH_NAMA}} {{INSTANCE_DIR}}
+
+[Unit]
+Description=CBT Server - {{SEKOLAH_NAMA}}
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+WorkingDirectory={{INSTANCE_DIR}}
+ExecStart={{INSTANCE_DIR}}/cbt-server
+EnvironmentFile={{INSTANCE_DIR}}/.env
+Restart=always
+RestartSec=5
+User=www
+
+[Install]
+WantedBy=multi-user.target
