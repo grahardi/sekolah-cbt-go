@@ -1,0 +1,399 @@
+/* Design tokens ------------------------------------------------------- */
+:root {
+  --paper: #f7f5f0;
+  --paper-raised: #fffefb;
+  --ink: #1e2a38;
+  --ink-muted: #5b6673;
+  --rule: #d9d4c8;
+  --accent: #2f5d8c;
+  --accent-ink: #ffffff;
+  --warn: #b4790a;
+  --danger: #b33b3b;
+  --success: #3f7a52;
+
+  --font-body: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+  --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace;
+
+  --radius: 3px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+
+.hidden { display: none !important; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Shared -------------------------------------------------------------- */
+.paper {
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+.eyebrow {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin: 0 0 0.25rem;
+}
+
+h1 {
+  font-family: var(--font-body);
+  font-size: 1.75rem;
+  margin: 0 0 1.5rem;
+}
+
+.btn {
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  width: 100%;
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--rule);
+  color: var(--ink);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+}
+
+.error {
+  font-family: var(--font-ui);
+  color: var(--danger);
+  font-size: 0.9rem;
+  min-height: 1.2em;
+}
+
+/* Login ----------------------------------------------------------------- */
+#login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  padding: 2rem;
+}
+
+#login-form label {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  margin: 1rem 0 0.3rem;
+}
+
+#login-form input {
+  width: 100%;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* Exam bar ---------------------------------------------------------------- */
+.exam-bar {
+  position: sticky;
+  top: 0;
+  background: var(--paper-raised);
+  border-bottom: 1px solid var(--rule);
+  z-index: 10;
+}
+
+.exam-bar-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-ui);
+}
+
+.peserta-nama {
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+}
+
+.timer-box {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-variant-numeric: tabular-nums;
+  padding: 0.2rem 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  color: var(--accent);
+}
+
+.timer-box.warn {
+  color: var(--warn);
+  border-color: var(--warn);
+}
+
+.timer-box.danger {
+  color: var(--danger);
+  border-color: var(--danger);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timer-box.danger { animation: none; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+.pills {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 1.25rem 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.pill {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: var(--paper-raised);
+  color: var(--ink-muted);
+  cursor: pointer;
+}
+
+.pill.answered {
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Soal ---------------------------------------------------------------- */
+.soal-card {
+  max-width: 720px;
+  margin: 1.5rem auto;
+  padding: 2rem;
+}
+
+.soal-nomor {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  margin: 0 0 1rem;
+}
+
+.soal-rujukan {
+  background: var(--paper);
+  border-left: 3px solid var(--rule);
+  padding: 0.75rem 1rem;
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  color: var(--ink-muted);
+  white-space: pre-wrap;
+}
+
+audio {
+  width: 100%;
+  margin: 0 0 1rem;
+}
+
+.soal-pertanyaan {
+  font-size: 1.15rem;
+  margin: 0 0 1.5rem;
+  white-space: pre-wrap;
+}
+
+.soal-opsi {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.opsi {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: var(--font-ui);
+  min-height: 2.75rem;
+}
+
+.opsi:has(input:checked) {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--paper-raised));
+}
+
+.opsi input {
+  accent-color: var(--accent);
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.soal-opsi textarea {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+  resize: vertical;
+}
+
+.save-status {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  min-height: 1.2em;
+  margin-top: 1rem;
+}
+
+/* Footer ---------------------------------------------------------------- */
+.exam-footer {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 1.25rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* Dialog ---------------------------------------------------------------- */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 42, 56, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 20;
+}
+
+.dialog {
+  max-width: 360px;
+  padding: 1.75rem;
+}
+
+.dialog h2 {
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+/* Result ---------------------------------------------------------------- */
+#result-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.result-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.result-auto {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--warn);
+  margin: 0 0 1rem;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.result-grid dt {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.result-grid dd {
+  font-family: var(--font-mono);
+  font-size: 1.75rem;
+  margin: 0.25rem 0 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.result-note {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+}
+
+/* Mobile ---------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .soal-card { margin: 1rem 0.75rem; padding: 1.25rem; }
+  .exam-footer { flex-wrap: wrap; }
+  .btn { flex: 1; }
+}

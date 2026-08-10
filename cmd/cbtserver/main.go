@@ -25,6 +25,7 @@ import (
 	"github.com/grahardi/sekolah-cbt-go/internal/db"
 	"github.com/grahardi/sekolah-cbt-go/internal/handlers"
 	"github.com/grahardi/sekolah-cbt-go/internal/migrate"
+	"github.com/grahardi/sekolah-cbt-go/internal/webui"
 )
 
 func main() {
@@ -153,6 +154,14 @@ func serve(cfg config.Config, pool *pgxpool.Pool) {
 	mux.HandleFunc("POST /admin/jadwals/{id}/selesai", h.RequireAdmin(h.SelesaiUjianAdmin))
 
 	mux.HandleFunc("GET /admin/jadwals/{id}/hasil", h.RequireAdmin(h.ListHasil))
+
+	// Static exam-taking web UI, served at "/" — falls through to this for
+	// anything that doesn't match a more specific API route above.
+	webFS, err := webui.FS()
+	if err != nil {
+		log.Fatalf("load web ui: %v", err)
+	}
+	mux.Handle("GET /", http.FileServerFS(webFS))
 
 	addr := fmt.Sprintf(":%d", cfg.Port)
 	log.Printf("cbt-server listening on %s (sekolah_id=%s schema=%s)", addr, cfg.SekolahID, cfg.DBSchema)

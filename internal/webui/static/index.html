@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ujian Online</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<section id="login-screen" class="screen">
+  <div class="paper login-card">
+    <p class="eyebrow">Ujian Berbasis Komputer</p>
+    <h1>Masuk Ujian</h1>
+    <form id="login-form">
+      <label for="no_ujian">No. Ujian</label>
+      <input id="no_ujian" name="no_ujian" type="text" autocomplete="off" required autofocus>
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="off" required>
+
+      <label for="token">Token Ujian</label>
+      <input id="token" name="token" type="text" autocomplete="off" required style="text-transform:uppercase">
+
+      <p id="login-error" class="error" role="alert"></p>
+
+      <button type="submit" class="btn btn-primary">Masuk</button>
+    </form>
+  </div>
+</section>
+
+<section id="exam-screen" class="screen hidden">
+  <header class="exam-bar">
+    <div class="exam-bar-inner">
+      <span id="peserta-nama" class="peserta-nama"></span>
+      <div id="timer-box" class="timer-box">
+        <span id="timer">--:--</span>
+      </div>
+    </div>
+    <nav id="pills" class="pills" aria-label="Navigasi soal"></nav>
+  </header>
+
+  <main class="paper soal-card">
+    <p id="soal-nomor" class="soal-nomor"></p>
+    <p id="soal-rujukan" class="soal-rujukan hidden"></p>
+    <audio id="soal-audio" class="hidden" controls></audio>
+    <p id="soal-pertanyaan" class="soal-pertanyaan"></p>
+    <div id="soal-opsi" class="soal-opsi"></div>
+    <p id="save-status" class="save-status" aria-live="polite"></p>
+  </main>
+
+  <footer class="exam-footer">
+    <button id="btn-prev" type="button" class="btn btn-ghost">&larr; Sebelumnya</button>
+    <button id="btn-selesai" type="button" class="btn btn-danger">Selesai Ujian</button>
+    <button id="btn-next" type="button" class="btn btn-ghost">Berikutnya &rarr;</button>
+  </footer>
+
+  <div id="confirm-dialog" class="dialog-overlay hidden">
+    <div class="dialog paper">
+      <h2>Selesaikan ujian?</h2>
+      <p>Jawaban yang sudah tersimpan tidak bisa diubah lagi setelah ini.</p>
+      <div class="dialog-actions">
+        <button id="confirm-cancel" type="button" class="btn btn-ghost">Batal</button>
+        <button id="confirm-ok" type="button" class="btn btn-danger">Ya, Selesaikan</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="result-screen" class="screen hidden">
+  <div class="paper result-card">
+    <p id="result-auto" class="result-auto hidden">Waktu habis — ujian diselesaikan otomatis.</p>
+    <p class="eyebrow">Ujian Selesai</p>
+    <h1>Hasil Ujian</h1>
+    <dl class="result-grid">
+      <div><dt>Benar</dt><dd id="result-benar">0</dd></div>
+      <div><dt>Salah</dt><dd id="result-salah">0</dd></div>
+      <div><dt>Nilai</dt><dd id="result-nilai">0</dd></div>
+    </dl>
+    <p class="result-note">Kamu boleh menutup halaman ini sekarang.</p>
+  </div>
+</section>
+
+<script src="/app.js"></script>
+</body>
+</html>
