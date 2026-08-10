@@ -9,7 +9,8 @@
 -- scoring breakdowns and extras can be added in later migrations once the
 -- exam engine needs them.
 
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
+-- gen_random_uuid() has been built into PostgreSQL core since v13, so no
+-- pgcrypto extension is needed here.
 
 CREATE TABLE matpels (
     id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
