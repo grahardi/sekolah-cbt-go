@@ -17,13 +17,26 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/grahardi/sekolah-cbt-go/internal/config"
 	"github.com/grahardi/sekolah-cbt-go/internal/db"
+	"github.com/grahardi/sekolah-cbt-go/internal/handlers"
 	"github.com/grahardi/sekolah-cbt-go/internal/migrate"
 )
 
 func main() {
+	// hash-password doesn't need the DB or a full config — handle it first
+	// so it's usable for seeding test pesertas by hand via psql.
+	if len(os.Args) > 2 && os.Args[1] == "hash-password" {
+		hash, err := bcrypt.GenerateFromPassword([]byte(os.Args[2]), bcrypt.DefaultCost)
+		if err != nil {
+			log.Fatalf("hash password: %v", err)
+		}
+		fmt.Println(string(hash))
+		return
+	}
+
 	if err := config.LoadDotEnv(".env"); err != nil {
 		log.Fatalf("load .env: %v", err)
 	}
@@ -50,6 +63,8 @@ func main() {
 }
 
 func serve(cfg config.Config, pool *pgxpool.Pool) {
+	h := &handlers.Handlers{Pool: pool, JWTSecret: cfg.JWTSecret}
+
 	mux := http.NewServeMux()
 
 	// Health check for the provisioning script / uptime monitoring, same
@@ -73,6 +88,11 @@ func serve(cfg config.Config, pool *pgxpool.Pool) {
 			"schema":     cfg.DBSchema,
 		})
 	})
+
+	mux.HandleFunc("POST /peserta/login", h.PesertaLogin)
+	mux.HandleFunc("GET /ujian/soal", h.RequirePeserta(h.ListSoal))
+	mux.HandleFunc("POST /ujian/jawab", h.RequirePeserta(h.SubmitJawaban))
+	mux.HandleFunc("POST /ujian/selesai", h.RequirePeserta(h.SelesaiUjian))
 
 	addr := fmt.Sprintf(":%d", cfg.Port)
 	log.Printf("cbt-server listening on %s (sekolah_id=%s schema=%s)", addr, cfg.SekolahID, cfg.DBSchema)
